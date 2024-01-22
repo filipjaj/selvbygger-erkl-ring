@@ -38,7 +38,7 @@ const addressSearch = async (
 const AddressSearch = ({ callback }: { callback: () => void }) => {
   const methods = useFormContext();
   const [search, setSearch] = useState("");
-  const debouncedAddress = useDebounce<string>(search, 500);
+  const debouncedAddress = useDebounce<string>(search, 200);
   console.log("debounce", debouncedAddress);
 
   const { data, isLoading } = useQuery<KartverketResponse>({

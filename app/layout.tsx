@@ -19,7 +19,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://use.typekit.net/szs0ybv.css"
+        ></link>
+      </head>
+      <body>
         <Provider>{children}</Provider>
       </body>
     </html>

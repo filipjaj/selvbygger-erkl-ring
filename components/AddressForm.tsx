@@ -296,7 +296,7 @@ const AddressForm = () => {
         </TabsContent>
         <TabsContent value="skjema">
           <>
-            <div className="flex my-10 gap-4">
+            <div className="flex my-10 gap-4 flex-wrap">
               <FormField
                 control={form.control}
                 name="kommunenssaksnummer"
@@ -338,8 +338,8 @@ const AddressForm = () => {
                     <FormLabel>
                       <span>Vedlegg</span>
                     </FormLabel>
-                    <span className="flex items-center text-base text-muted-foreground gap-0.5">
-                      <p>G-</p>
+                    <span className="flex items-center  gap-0.5">
+                      <p className="text-base text-muted-foreground">G-</p>
                       <FormControl>
                         <Input placeholder="0000" {...field} />
                       </FormControl>
@@ -351,7 +351,7 @@ const AddressForm = () => {
               />
             </div>
             <Separator />
-            <div className="flex gap-4 my-2 mt-10">
+            <div className="flex gap-4 my-5 ">
               <FormField
                 control={form.control}
                 name="adresse"
