@@ -19,7 +19,7 @@ const FormPreview = () => {
     <Table>
       {mappedData.map((item) => {
         return (
-          <TableRow>
+          <TableRow key={item.name}>
             <TableCell>{item.name}</TableCell>
             <TableCell>{item.value}</TableCell>
           </TableRow>
