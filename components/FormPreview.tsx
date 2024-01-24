@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form";
-import { Table, TableCell, TableRow } from "./ui/table";
+import { Table, TableBody, TableCell, TableRow } from "./ui/table";
 
 const FormPreview = () => {
   const methods = useFormContext();
@@ -17,14 +17,16 @@ const FormPreview = () => {
 
   return (
     <Table>
-      {mappedData.map((item) => {
-        return (
-          <TableRow key={item.name}>
-            <TableCell>{item.name}</TableCell>
-            <TableCell>{item.value}</TableCell>
-          </TableRow>
-        );
-      })}
+      <TableBody>
+        {mappedData.map((item) => {
+          return (
+            <TableRow key={item.name}>
+              <TableCell>{item.name}</TableCell>
+              <TableCell>{item.value}</TableCell>
+            </TableRow>
+          );
+        })}
+      </TableBody>
     </Table>
   );
 };
