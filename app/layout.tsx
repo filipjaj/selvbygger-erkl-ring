@@ -1,8 +1,8 @@
+import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { Inter } from "next/font/google";
 import "./globals.css";
-
 const Provider = dynamic(() => import("./provider"), { ssr: false });
 
 const inter = Inter({ subsets: ["latin"] });
@@ -27,6 +27,7 @@ export default function RootLayout({
       </head>
       <body>
         <Provider>{children}</Provider>
+        <Toaster />
       </body>
     </html>
   );

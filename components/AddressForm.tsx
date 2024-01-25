@@ -1,5 +1,4 @@
 "use client";
-
 import { formSchema } from "@/lib/formSchema";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,7 +10,8 @@ import {
 } from "@radix-ui/react-popover";
 import { format } from "date-fns";
 import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import AddressSearch from "./AddressSearch";
 import FormPreview from "./FormPreview";
 import { Button } from "./ui/button";
@@ -36,10 +36,37 @@ import { Input } from "./ui/input";
 import { Separator } from "./ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 
+type GenericForm = {
+  [key: string]: string;
+};
+
+const sendResponse = async (data: GenericForm, onSuccess: () => void) => {
+  const res = await fetch("https://arkitektbedriftene.free.beeceptor.com", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) return Promise.reject(res.statusText);
+
+  onSuccess();
+
+  return res;
+};
+
+const onSubmit = async (data: GenericForm, onSuccess: () => void) => {
+  const ValidatedData = formSchema.safeParse(data);
+  if (!ValidatedData.success) return console.log(ValidatedData.error);
+  console.log(ValidatedData);
+
+  const res = toast.promise(sendResponse(data, onSuccess), {
+    loading: "Sender inn skjema",
+    success: "Skjemaet er sendt inn til MAKS",
+    error: "Noe gikk galt",
+  });
+};
+
 const AddressForm = () => {
   //   const [address, setAddress] = useState("");
-
-  const [token, setToken] = useState("");
 
   const [selectedTab, setSelectedTab] = useState<
     "søk" | "skjema" | "forhåndsvisning"
@@ -65,25 +92,9 @@ const AddressForm = () => {
     },
   });
 
-  type GenericForm = {
-    [key: string]: string;
-  };
-
-  const onSubmit: SubmitHandler<GenericForm> = async (data) => {
-    const ValidatedData = formSchema.safeParse(data);
-    if (!ValidatedData.success) return console.log(ValidatedData.error);
-    console.log(ValidatedData);
-    const res = await fetch("https://arkitektbedriftene.free.beeceptor.com", {
-      method: "POST",
-      body: JSON.stringify(ValidatedData),
-    });
-    const json = res.json();
-    console.log(json);
-  };
-
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit((d) => onSubmit(d, form.reset))}>
         <Tabs defaultValue="søk" className="w-full" value={selectedTab}>
           <TabsList>
             <TabsTrigger value="søk" onClick={() => setSelectedTab("søk")}>

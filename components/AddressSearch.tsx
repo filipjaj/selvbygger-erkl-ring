@@ -30,9 +30,11 @@ const addressSearch = async (
       signal,
     }
   );
+
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
+
   return response.json();
 };
 
@@ -42,7 +44,7 @@ const AddressSearch = ({ callback }: { callback: () => void }) => {
   const debouncedAddress = useDebounce<string>(search, 200);
   console.log("debounce", debouncedAddress);
 
-  const { data, isLoading } = useQuery<KartverketResponse>({
+  const { data, isLoading, isError } = useQuery<KartverketResponse>({
     queryKey: ["address", debouncedAddress],
     queryFn: async ({ signal }) => addressSearch(debouncedAddress, signal),
     enabled: !!debouncedAddress,
@@ -72,7 +74,7 @@ const AddressSearch = ({ callback }: { callback: () => void }) => {
         className="mb-4"
       />
 
-      {isLoading && (
+      {isLoading && !isError && (
         <Card>
           <CardHeader>
             <CardTitle>Søker etter adresser</CardTitle>
@@ -84,7 +86,7 @@ const AddressSearch = ({ callback }: { callback: () => void }) => {
         </Card>
       )}
 
-      {!data && !isLoading && (
+      {!data && !isLoading && !isError && (
         <Card>
           <CardHeader>
             <CardTitle>Ingen treff</CardTitle>
@@ -92,6 +94,17 @@ const AddressSearch = ({ callback }: { callback: () => void }) => {
 
           <CardContent>
             <p>Søk i feltet over for å finne adresser</p>
+          </CardContent>
+        </Card>
+      )}
+      {isError && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Feil</CardTitle>
+          </CardHeader>
+
+          <CardContent>
+            <p>Noe gikk galt under søket</p>
           </CardContent>
         </Card>
       )}
