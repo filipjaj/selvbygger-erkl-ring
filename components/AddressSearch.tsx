@@ -4,7 +4,8 @@ import useDebounce from "@/lib/hooks/useDebounce";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { KartverketResponse } from "./AddressForm";
+
+import { KartverketResponse } from "@/lib/zodSchemas";
 import { Button } from "./ui/button";
 import {
   Card,
